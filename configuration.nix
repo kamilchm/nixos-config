@@ -72,6 +72,7 @@
       xscreensaver
       pmutils
       networkmanagerapplet
+      openconnect
       networkmanager_openconnect
       oxygen-gtk2
       oxygen-gtk3
