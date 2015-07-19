@@ -85,8 +85,7 @@
   services = {
     acpid.enable = true;
     acpid.lidEventCommands = ''
-      grep -q open /proc/acpi/button/lid/LID0/state && \
-      /run/current-system/sw/bin/xscreensaver-command -lock || \ 
+      grep -q closed /proc/acpi/button/lid/LID0/state && \
       /run/current-system/sw/bin/systemctl suspend
     '';
 
@@ -126,6 +125,7 @@
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "ondemand";
+    resumeCommands = "/run/current-system/sw/bin/xscreensaver-command -lock";
   };
 
   fonts = {
