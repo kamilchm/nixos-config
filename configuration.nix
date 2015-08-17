@@ -143,10 +143,12 @@
     ];
   };
 
+  virtualisation.docker.enable = true;
+
   users.extraUsers.kamil = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "networkmanager" "auio" "video" "power" ];
+    extraGroups = [ "wheel" "networkmanager" "auio" "video" "power" "docker" ];
   };
 
 }
