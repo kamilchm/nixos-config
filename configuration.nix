@@ -111,7 +111,7 @@
       synaptics.enable = false;
 
       desktopManager.xfce.enable = true;
-      desktopManager.qtile.enable = true;
+      windowManager.qtile.enable = true;
 
       displayManager.sessionCommands = ''
         xscreensaver -no-splash &
