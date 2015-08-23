@@ -144,6 +144,8 @@
   };
 
   virtualisation.docker.enable = true;
+  virtualisation.lxc.enable = true;
+  virtualisation.virtualbox.host.enable = true;
 
   users.extraUsers.kamil = {
     isNormalUser = true;
