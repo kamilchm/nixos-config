@@ -79,7 +79,7 @@
       gtk-engine-murrine
       git
       wget
-      vim
+      vim_configurable
   ];
 
   services = {
