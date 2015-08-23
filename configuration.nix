@@ -53,7 +53,7 @@
   time.timeZone = "Europe/Warsaw";
 
   networking.hostName = "black";
-  #networking.wireless.enable = true;
+  networking.extraHosts = "127.0.0.1 black";
   networking.networkmanager.enable = true;
 
   # Select internationalisation properties.
