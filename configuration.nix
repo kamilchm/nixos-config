@@ -10,10 +10,6 @@
     bluetooth.enable = true;
     pulseaudio.enable = true;
     cpu.intel.updateMicrocode = true;
-    bumblebee = {
-      enable = true;
-      group = "video";
-    };
 
     trackpoint = {
       enable = true;
@@ -35,12 +31,17 @@
         { name = "luksroot"; device = "/dev/sda2"; preLVM = true; }
       ];
     };
-    kernelModules = [ "kvm-intel" "msr" ];
+    kernelModules = [ "kvm-intel" "msr" "bbswitch" ];
+    blacklistedKernelModules = [ "snd_pcsp" "pcspkr" ];
+
+    kernelParams = [
+      "i915.enable_ips=0"
+    ];
+    
     extraModprobeConfig = ''
       options snd_hda_intel mode=auto power_save=1 index=1
     '';
-    blacklistedKernelModules = [ "snd_pcsp" "pcspkr" ];
-    
+
     loader.grub = {
       enable = true;
       version = 2;
@@ -53,7 +54,9 @@
   time.timeZone = "Europe/Warsaw";
 
   networking.hostName = "black";
-  networking.extraHosts = "127.0.0.1 black";
+  networking.extraHosts = ''
+    127.0.0.1   black
+  '';
   networking.networkmanager.enable = true;
 
   # Select internationalisation properties.
@@ -91,21 +94,14 @@
 
     dbus.enable = true;
     devmon.enable = true;
+    printing.enable = true;
 
     xserver = {
       enable = true;
 
-      videoDrivers = [ "intel" ]; #"nvidiaLegacy340" ];
+      videoDrivers = [ "intel" ];
       vaapiDrivers = [ pkgs.vaapiIntel ];
       
-      deviceSection = ''
-	#Identifier "Intel Graphics"
-	#Option "AccelMethod" "uxa"
-	Option "AccelMethod" "sna"
-	Option "Backlight" "intel_backlight"
-	BusID "PCI:0:2:0"
-      '';
-
       layout = "pl";
       
       synaptics.enable = false;
@@ -119,9 +115,10 @@
 
       displayManager.slim.enable = true;
     };
+
+    gnome3.at-spi2-core.enable = true;
   };
 
-  services.printing.enable = true;
 
   powerManagement = {
     enable = true;
@@ -144,13 +141,14 @@
   };
 
   virtualisation.docker.enable = true;
+  virtualisation.docker.storageDriver = "overlay";
   virtualisation.lxc.enable = true;
   virtualisation.virtualbox.host.enable = true;
 
   users.extraUsers.kamil = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "networkmanager" "auio" "video" "power" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "lp" "power" "docker" ];
   };
 
 }
