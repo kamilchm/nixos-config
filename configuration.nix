@@ -37,7 +37,6 @@
     kernelParams = [
       "i915.enable_ips=0"
     ];
-    
     extraModprobeConfig = ''
       options snd_hda_intel mode=auto power_save=1 index=1
     '';
@@ -124,6 +123,7 @@
     enable = true;
     cpuFreqGovernor = "ondemand";
     resumeCommands = "/run/current-system/sw/bin/xscreensaver-command -lock";
+    scsiLinkPolicy = "max_performance";
   };
 
   fonts = {
