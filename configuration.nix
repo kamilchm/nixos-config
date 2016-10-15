@@ -4,12 +4,15 @@
   imports =
     [
       ./hardware-configuration.nix
+      
+      <nixpkgs/nixos/modules/programs/command-not-found/command-not-found.nix>
     ];
 
   hardware = {
     bluetooth.enable = true;
     pulseaudio.enable = true;
     cpu.intel.updateMicrocode = true;
+    opengl.extraPackages = [ pkgs.vaapiIntel ];
 
     trackpoint = {
       enable = true;
@@ -21,10 +24,10 @@
   boot = {
     vesa = false;
 
-    kernelPackages = pkgs.linuxPackages_4_1;
+    kernelPackages = pkgs.linuxPackages_4_7;
 
     initrd = {
-      kernelModules = [ "xhci_hcd" "ehci_pci" "ahci" "usb_storage" "aesni-intel" "fbcon" "i915" ];
+      kernelModules = [ "xhci_hcd" "ehci_pci" "ahci" "usb_storage" "aesni-intel" "i915" ];
       availableKernelModules = [ "scsi_wait_scan" ];
       
       luks.devices = [
@@ -48,6 +51,8 @@
       memtest86.enable = false;
       configurationLimit = 50;
     };
+
+    cleanTmpDir = true;
   };
 
   time.timeZone = "Europe/Warsaw";
@@ -94,16 +99,24 @@
     dbus.enable = true;
     devmon.enable = true;
     printing.enable = true;
+    udev.packages = [ pkgs.libmtp ];
 
     xserver = {
       enable = true;
 
-      videoDrivers = [ "intel" ];
-      vaapiDrivers = [ pkgs.vaapiIntel ];
+      videoDrivers = [ ];
       
       layout = "pl";
       
-      synaptics.enable = false;
+      inputClassSections = [
+      ''
+        Identifier "evdev touchpad off"
+        MatchIsTouchpad "on"
+        MatchDevicePath "/dev/input/event*"
+        Driver "evdev"
+        Option "Ignore" "true"
+      ''
+      ];
 
       desktopManager.xfce.enable = true;
       windowManager.qtile.enable = true;
@@ -148,7 +161,7 @@
   users.extraUsers.kamil = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" "lp" "power" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "lp" "power" "storage" "plugdev" "docker" ];
   };
 
 }

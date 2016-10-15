@@ -17,5 +17,8 @@
 
   swapDevices = [ ];
 
+  nix.nixPath =  [ "/home/kamil" "nixos-config=/etc/nixos/configuration.nix" ];
   nix.maxJobs = 4;
+  nix.buildCores = 0;
+  nix.useSandbox = true;
 }
