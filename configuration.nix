@@ -91,6 +91,7 @@
       oxygen-gtk3
       gtk-engine-murrine
       git
+      tig
       wget
       vim_configurable
   ];
