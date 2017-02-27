@@ -66,6 +66,9 @@
       enable = true;
       unmanaged = [ "interface-name:ve*" "interface-name:vboxnet*" ]; 
     };
+    firewall = {
+      allowedTCPPorts = [ 8080 ];
+    };
   };
 
   # Select internationalisation properties.
