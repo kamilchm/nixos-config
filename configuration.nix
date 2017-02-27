@@ -174,7 +174,6 @@
     ];
   };
 
-  virtualisation.lxc.enable = true;
   virtualisation.docker = {
     enable = true;
     storageDriver = "overlay";
