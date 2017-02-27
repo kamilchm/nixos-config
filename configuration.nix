@@ -57,11 +57,16 @@
 
   time.timeZone = "Europe/Warsaw";
 
-  networking.hostName = "black";
-  networking.extraHosts = ''
-    127.0.0.1   black
-  '';
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "black";
+    extraHosts = ''
+      127.0.0.1   black
+    '';
+    networkmanager = {
+      enable = true;
+      unmanaged = [ "interface-name:ve*" "interface-name:vboxnet*" ]; 
+    };
+  };
 
   # Select internationalisation properties.
   i18n = {
