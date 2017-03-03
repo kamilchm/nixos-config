@@ -92,8 +92,6 @@
       openconnect
       networkmanager_openconnect
       ntfs3g
-      oxygen-gtk2
-      oxygen-gtk3
       gtk-engine-murrine
       git
       tig
