@@ -69,6 +69,7 @@
     firewall = {
       allowedTCPPorts = [ 8080 ];
       trustedInterfaces = [ "docker0" ];
+      checkReversePath = false;
     };
   };
 
@@ -180,11 +181,15 @@
     extraOptions = "--dns 172.17.0.1";
   };
   virtualisation.virtualbox.host.enable = true;
+  virtualisation.libvirtd = {
+    enable = true;
+    enableKVM = true;
+  };
 
   users.extraUsers.kamil = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" "lp" "power" "storage" "plugdev" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "lp" "power" "storage" "plugdev" "docker" "libvirtd" ];
   };
 
 }
