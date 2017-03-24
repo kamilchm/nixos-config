@@ -146,6 +146,10 @@
       '';
 
       displayManager.slim.enable = true;
+      displayManager.slim.extraConfig = ''
+        sessionstart_cmd    ${pkgs.xorg.sessreg}/bin/sessreg -a -l tty7 %user
+        sessionstop_cmd     ${pkgs.xorg.sessreg}/bin/sessreg -d -l tty7 %user
+      '';
     };
 
     gnome3.at-spi2-core.enable = true;
