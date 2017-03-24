@@ -101,10 +101,6 @@
 
   services = {
     acpid.enable = true;
-    acpid.lidEventCommands = ''
-      grep -q closed /proc/acpi/button/lid/LID0/state && \
-      /run/current-system/sw/bin/systemctl suspend
-    '';
 
     dbus.enable = true;
     devmon.enable = true;
@@ -152,6 +148,8 @@
       '';
     };
 
+    physlock.enable = true;
+
     gnome3.at-spi2-core.enable = true;
   };
 
@@ -159,7 +157,6 @@
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "ondemand";
-    resumeCommands = "/run/current-system/sw/bin/xscreensaver-command -lock";
     scsiLinkPolicy = "max_performance";
   };
 
