@@ -96,8 +96,9 @@
       git
       tig
       wget
-      vim_configurable
   ];
+
+  programs.vim.defaultEditor = true;
 
   services = {
     acpid.enable = true;
