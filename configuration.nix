@@ -98,7 +98,11 @@
       wget
   ];
 
-  programs.vim.defaultEditor = true;
+  programs = {
+    ssh.startAgent = true;
+
+    vim.defaultEditor = true;
+  };
 
   services = {
     acpid.enable = true;
