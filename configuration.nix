@@ -198,7 +198,7 @@
   users.extraUsers.kamil = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" "lp" "power" "storage" "plugdev" "docker" "libvirtd" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "lp" "power" "disk" "storage" "plugdev" "docker" "libvirtd" ];
   };
 
 }
