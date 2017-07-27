@@ -24,7 +24,7 @@
   boot = {
     vesa = false;
 
-    kernelPackages = pkgs.linuxPackages_4_9;
+    kernelPackages = pkgs.linuxPackages_4_12;
 
     initrd = {
       kernelModules = [ "xhci_hcd" "ehci_pci" "ahci" "usb_storage" "aesni-intel" "i915" ];
