@@ -194,7 +194,6 @@
   virtualisation.virtualbox.host.enable = true;
   virtualisation.libvirtd = {
     enable = true;
-    enableKVM = true;
   };
 
   users.extraUsers.kamil = {
