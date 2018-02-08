@@ -4,6 +4,7 @@
   imports =
     [
       ./hardware-configuration.nix
+      ./dnsmasq-configuration.nix
       
       <nixpkgs/nixos/modules/programs/command-not-found/command-not-found.nix>
     ];
@@ -113,16 +114,6 @@
     devmon.enable = true;
     printing.enable = true;
     udev.packages = [ pkgs.libmtp ];
-
-    dnsmasq = {
-      enable = true;
-      resolveLocalQueries = true;
-      servers = [ # https://github.com/NixOS/nixpkgs/pull/15560 ?
-        ''/./127.0.0.1#5300''
-        ''8.8.8.8''
-        ''8.8.4.4''
-      ];
-    };
 
     xserver = {
       enable = true;
