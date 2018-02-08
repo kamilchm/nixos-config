@@ -52,6 +52,8 @@
       configurationLimit = 50;
     };
 
+    plymouth.enable = true;
+
     cleanTmpDir = true;
   };
 
