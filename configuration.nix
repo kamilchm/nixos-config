@@ -23,30 +23,12 @@
     pulseaudio.package = pkgs.pulseaudioFull;
     cpu.intel.updateMicrocode = true;
     opengl.extraPackages = with pkgs; [ vaapiIntel vaapiVdpau libvdpau-va-gl ];
-
-    #trackpoint = {
-    #  enable = true;
-    #  sensitivity = 90;
-    #  speed = 140;
-    #  emulateWheel = true;
-    #};
   };  
 
   boot = {
     vesa = false;
 
     kernelPackages = pkgs.linuxPackages_4_19;
-
-    initrd = {
-      kernelModules = [ "xhci_hcd" "ehci_pci" "ahci" "usb_storage" "aesni-intel" "i915" ];
-      availableKernelModules = [ "scsi_wait_scan" ];
-      
-      luks.devices = [
-        { name = "luksroot"; device = "/dev/sda2"; preLVM = true; }
-      ];
-    };
-    kernelModules = [ "kvm-intel" "msr" "bbswitch" ];
-    blacklistedKernelModules = [ "snd_pcsp" "pcspkr" ];
 
     kernelParams = [
       "i915.enable_ips=0"
@@ -128,10 +110,12 @@
     xserver = {
       enable = true;
 
-      videoDrivers = [ ];
+      videoDrivers = [ "intel" ];
       
       layout = "pl";
       
+      libinput.enable = true;
+      synaptics.enable = false;
       inputClassSections = [
         ''
           Identifier "Enable libinput for TrackPoint"
@@ -168,7 +152,6 @@
 
   powerManagement = {
     enable = true;
-    cpuFreqGovernor = "ondemand";
     scsiLinkPolicy = "max_performance";
   };
 
