@@ -51,6 +51,8 @@
 
     plymouth.enable = true;
 
+    supportedFilesystems = [ "exfat" ];
+
     cleanTmpDir = true;
   };
 
