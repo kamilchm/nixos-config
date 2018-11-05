@@ -12,16 +12,18 @@
     ];
 
   hardware = {
-    bluetooth.enable = true;
-    pulseaudio.enable = true;
     cpu.intel.updateMicrocode = true;
     opengl.extraPackages = [ pkgs.vaapiIntel ];
 
-    trackpoint = {
+    bluetooth = {
       enable = true;
-      sensitivity = 200;
-      emulateWheel = true;
+      extraConfig = ''
+        [general]
+        Enable=Source,Sink,Media,Socket
+      '';
     };
+    pulseaudio.enable = true;
+    pulseaudio.package = pkgs.pulseaudioFull;
   };  
 
   boot = {
