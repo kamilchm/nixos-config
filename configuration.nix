@@ -23,6 +23,13 @@
     pulseaudio.package = pkgs.pulseaudioFull;
     cpu.intel.updateMicrocode = true;
     opengl.extraPackages = with pkgs; [ vaapiIntel vaapiVdpau libvdpau-va-gl ];
+
+    #trackpoint = {
+    #  enable = true;
+    #  sensitivity = 90;
+    #  speed = 140;
+    #  emulateWheel = true;
+    #};
   };  
 
   boot = {
@@ -126,13 +133,12 @@
       layout = "pl";
       
       inputClassSections = [
-      ''
-        Identifier "evdev touchpad off"
-        MatchIsTouchpad "on"
-        MatchDevicePath "/dev/input/event*"
-        Driver "evdev"
-        Option "Ignore" "true"
-      ''
+        ''
+          Identifier "Enable libinput for TrackPoint"
+          MatchIsPointer "on"
+          Driver "libinput"
+          Option "Accel Speed" "-0.4"
+        ''
       ];
 
       desktopManager.xfce.enable = true;
