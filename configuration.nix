@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  nix.useSandbox = true;
+
   imports =
     [
       ./hardware-configuration.nix
