@@ -58,6 +58,8 @@
 
   time.timeZone = "Europe/Warsaw";
 
+  system.stateVersion = "19.03";
+
   networking = {
     hostName = "black";
     extraHosts = ''
