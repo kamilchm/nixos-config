@@ -12,9 +12,6 @@
     ];
 
   hardware = {
-    cpu.intel.updateMicrocode = true;
-    opengl.extraPackages = [ pkgs.vaapiIntel ];
-
     bluetooth = {
       enable = true;
       extraConfig = ''
@@ -24,6 +21,8 @@
     };
     pulseaudio.enable = true;
     pulseaudio.package = pkgs.pulseaudioFull;
+    cpu.intel.updateMicrocode = true;
+    opengl.extraPackages = with pkgs; [ vaapiIntel vaapiVdpau libvdpau-va-gl ];
   };  
 
   boot = {
