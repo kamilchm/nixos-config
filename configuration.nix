@@ -37,6 +37,10 @@
       options snd_hda_intel mode=auto power_save=1 index=1
     '';
 
+    kernel.sysctl = {
+        "vm.dirty_bytes" = 15000000;
+    };
+
     loader.grub = {
       enable = true;
       version = 2;
