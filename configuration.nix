@@ -151,11 +151,6 @@
         sessionstart_cmd    ${pkgs.xorg.sessreg}/bin/sessreg -a -l tty7 %user
         sessionstop_cmd     ${pkgs.xorg.sessreg}/bin/sessreg -d -l tty7 %user
       '';
-
-      xautolock = {
-        enable = true;
-        locker = "xscreensaver-command -l";
-      };
     };
 
     physlock.enable = true;
