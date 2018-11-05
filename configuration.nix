@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 {
+  nix.nixPath =  [ "/home/kamil" "nixos-config=/etc/nixos/configuration.nix" ];
   nix.useSandbox = true;
 
   imports =
