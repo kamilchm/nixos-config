@@ -81,7 +81,12 @@
     defaultLocale = "pl_PL.UTF-8";
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = { 
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      bluez = pkgs.bluez5;
+    };
+  };
 
   environment.systemPackages = with pkgs; [
       xlibs.xf86videointel
@@ -111,7 +116,10 @@
     dbus.enable = true;
     devmon.enable = true;
     printing.enable = true;
-    udev.packages = [ pkgs.libmtp ];
+    udev = {
+      packages = [ pkgs.libmtp ];
+    };
+    udisks2.enable = true;
 
     xserver = {
       enable = true;
