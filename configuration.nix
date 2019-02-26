@@ -29,7 +29,7 @@
   boot = {
     vesa = false;
 
-    kernelPackages = pkgs.linuxPackages_4_19;
+    kernelPackages = pkgs.linuxPackages_4_20;
 
     kernelParams = [
       "i915.enable_ips=0"
