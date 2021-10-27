@@ -3,11 +3,15 @@
 {
   nix.nixPath =  [ "/home/kamil" "nixos-config=/etc/nixos/configuration.nix" ];
   nix.useSandbox = true;
+  # nix.systemFeatures = [ "gccarch-broadwell" ];
+  # pkgs.hostPlatform.platform = "broadwell"; 
 
   imports =
     [
       ./hardware-configuration.nix
       ./dnsmasq-configuration.nix
+
+      ./cachix.nix
       
       <nixpkgs/nixos/modules/programs/command-not-found/command-not-found.nix>
     ];
@@ -15,31 +19,38 @@
   hardware = {
     bluetooth = {
       enable = true;
-      extraConfig = ''
-        [general]
-        Enable=Source,Sink,Media,Socket
-      '';
+      settings = {
+        General = { Enable = "Source,Sink,Media,Socket"; };
+      };
     };
     pulseaudio.enable = true;
     pulseaudio.package = pkgs.pulseaudioFull;
     cpu.intel.updateMicrocode = true;
-    opengl.extraPackages = with pkgs; [ vaapiIntel vaapiVdpau libvdpau-va-gl ];
+    opengl = {
+      enable = true;
+      extraPackages = with pkgs; [ vaapiIntel vaapiVdpau libvdpau-va-gl intel-ocl ];
+    };
   };  
 
   boot = {
     vesa = false;
 
-    kernelPackages = pkgs.linuxPackages_4_20;
+    kernelPackages = pkgs.linuxPackages_5_14;
 
     kernelParams = [
       "i915.enable_ips=0"
+      "i915.enable_psr=0" # https://bugs.freedesktop.org/show_bug.cgi?id=111088
     ];
     extraModprobeConfig = ''
-      options snd_hda_intel mode=auto power_save=1 index=1
+      options snd_hda_intel power_save=1
     '';
 
     kernel.sysctl = {
-        "vm.dirty_bytes" = 15000000;
+      "vm.dirty_bytes" = 15000000;
+      
+      # https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
+      # 2+4+8+16+32+64+256
+      "kernel.sysrq" = 382; 
     };
 
     loader.grub = {
@@ -79,9 +90,12 @@
 
   # Select internationalisation properties.
   i18n = {
-    consoleFont = "lat9w-16";
-    consoleKeyMap = "pl";
-    defaultLocale = "pl_PL.UTF-8";
+    #defaultLocale = "pl_PL.UTF-8";
+    defaultLocale = "en_US.UTF-8";
+  };
+  console = {
+    font = "lat9w-16";
+    keyMap = "pl";
   };
 
   nixpkgs.config = { 
@@ -105,12 +119,17 @@
       git
       tig
       wget
+      brlaser
   ];
 
   programs = {
     ssh.startAgent = true;
 
+    gnupg.agent.enable = true;
+
     vim.defaultEditor = true;
+
+    adb.enable = true;
   };
 
   services = {
@@ -127,16 +146,25 @@
     xserver = {
       enable = true;
 
-      videoDrivers = [ "intel" ];
+      videoDrivers = [ "intel" "mesa" ];
+      resolutions = [ { x = 1920; y = 1080; } ];
       
       layout = "pl";
       
-      libinput.enable = true;
+      libinput = {
+        enable = true;
+      };
       synaptics.enable = false;
       inputClassSections = [
         ''
-          Identifier "Enable libinput for TrackPoint"
-          MatchIsPointer "on"
+          Identifier "Slow down dell Trackpoint"
+          MatchProduct "DualPoint Stick"
+          Driver "libinput"
+          Option "Accel Speed" "-0.5"
+        ''
+        ''
+          Identifier "Slow down Thinkpad Keyboard Trackpoint"
+          MatchProduct "ThinkPad Compact Bluetooth Keyboard with TrackPoint"
           Driver "libinput"
           Option "Accel Speed" "-0.4"
         ''
@@ -149,26 +177,27 @@
         xscreensaver -no-splash &
       '';
 
-      displayManager.slim.enable = true;
-      displayManager.slim.extraConfig = ''
-        sessionstart_cmd    ${pkgs.xorg.sessreg}/bin/sessreg -a -l tty7 %user
-        sessionstop_cmd     ${pkgs.xorg.sessreg}/bin/sessreg -d -l tty7 %user
-      '';
+      displayManager.lightdm.enable = true;
     };
 
     physlock.enable = true;
 
-    gnome3.at-spi2-core.enable = true;
-  };
+    gnome.at-spi2-core.enable = true;
 
+    ipfs = {
+      enable = false;
+      gatewayAddress = "/ip4/127.0.0.1/tcp/23456";
+    };
 
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  
   powerManagement = {
     enable = true;
     scsiLinkPolicy = "max_performance";
   };
 
   fonts = {
-    enableFontDir = true;
+    fontDir = { enable = true; };
     enableGhostscriptFonts = true;
     fonts = with pkgs; [
        corefonts
@@ -186,7 +215,7 @@
     storageDriver = "overlay";
     extraOptions = "--dns 172.17.0.1";
   };
-  virtualisation.virtualbox.host.enable = true;
+  # virtualisation.virtualbox.host.enable = true;
   virtualisation.libvirtd = {
     enable = true;
     qemuPackage = pkgs.qemu_kvm;
@@ -195,7 +224,7 @@
   users.extraUsers.kamil = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "networkmanager" "audio" "video" "lp" "power" "disk" "storage" "plugdev" "docker" "libvirtd" "kvm" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "video" "lp" "power" "disk" "storage" "plugdev" "docker" "libvirtd" "kvm" "adbusers" ];
   };
 
 }

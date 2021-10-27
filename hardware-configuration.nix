@@ -7,7 +7,7 @@
 
   boot.initrd.availableKernelModules = [
     "xhci_pci" "xhci_hcd" "ehci_pci" "ahci" "uas" "sd_mod" "rtsx_pci_sdmmc"
-    "aes_x86_64" "aesni_intel" "cryptd" "usb_storage"
+    "aesni_intel" "cryptd" "usb_storage"
   ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.blacklistedKernelModules = [ "snd_pcsp" "snd_pcm_oss" "pcspkr" ];
@@ -25,7 +25,7 @@
       fsType = "ext3";
     };
 
-  swapDevices = [ { device = "/swapfile"; size = 10000; } ];
+  swapDevices = [ { device = "/swapfile"; } ];
 
   nix.maxJobs = lib.mkDefault 4;
   powerManagement.cpuFreqGovernor = "powersave";
